@@ -1,6 +1,6 @@
 # Binance Traiding на Laravel
 
-Тестовое задание из `Test Binance Traiding.docx` на Laravel 10. Хостинг не используется: база данных MySQL создаётся локально.
+Тестовое задание из `Test Binance Traiding.docx` на Laravel 13 (PHP 8.6) с админкой Filament 5. Хостинг не используется: база данных создаётся локально (MariaDB или MySQL).
 
 ## Что сделано
 
@@ -17,7 +17,7 @@
 
 ## Админ-панель
 
-[Filament 3](https://filamentphp.com/) на http://127.0.0.1:8000/admin — список курсов с поиском, сортировкой, фильтром по валюте котировки (BTC / ETH / USDT), создание, редактирование и удаление.
+[Filament 5](https://filamentphp.com/) на http://127.0.0.1:8000/admin — список курсов с поиском, сортировкой, фильтром по валюте котировки (BTC / ETH / USDT), создание, редактирование и удаление.
 
 Войти может только пользователь из `ADMIN_EMAIL`. Логин и пароль задаются в `.env` (`ADMIN_EMAIL`, `ADMIN_PASSWORD`; `start.ps1` при первом запуске генерирует пароль сам). Создать или обновить пользователя:
 
@@ -29,11 +29,11 @@ php artisan db:seed --class=AdminUserSeeder
 
 ## Требования
 
-- PHP 8.1+ с расширениями `pdo_mysql`, `intl`, `mbstring`, `openssl`, `curl`, `fileinfo`
+- PHP 8.3+ (проверено на 8.6) с расширениями `pdo_mysql`, `intl`, `mbstring`, `openssl`, `curl`, `fileinfo`
 - Composer
 - MySQL 8 (локально)
 
-## Быстрый запуск (Windows + OSPanel)
+## Быстрый запуск (Windows)
 
 Из корня репозитория:
 
@@ -41,7 +41,7 @@ php artisan db:seed --class=AdminUserSeeder
 .\start.ps1
 ```
 
-Скрипт берёт PHP 8.1 и MariaDB 10.8 из `C:\OSPanel`, при первом запуске создаёт базу в `.mariadb\data` (порт 3307, `root` без пароля), ставит зависимости, выполняет миграции и загрузку `courses.json`, затем запускает сайт на http://127.0.0.1:8000. Остановка — Ctrl+C. Параметры: `-Port`, `-PhpDir`, `-MariaDbDir`, `-KeepDatabase`. Настройки PHP — в `php-dev.ini`.
+Скрипт берёт PHP и `composer.phar` из папки `php` в PATH (например, PHP 8.6 из winget), MariaDB 10.8 — из `C:\OSPanel`; при первом запуске создаёт базу в `.mariadb\data` (порт 3307, `root` без пароля), ставит зависимости, выполняет миграции и загрузку `courses.json`, затем запускает сайт на http://127.0.0.1:8000. Остановка — Ctrl+C. Параметры: `-Port`, `-PhpDir`, `-Composer`, `-MariaDbDir`, `-KeepDatabase`. Нужные расширения PHP включаются в `php.ini` рядом с `php.exe`.
 
 Если PowerShell блокирует запуск скриптов: `powershell -ExecutionPolicy Bypass -File .\start.ps1`.
 

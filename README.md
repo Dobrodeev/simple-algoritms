@@ -4,7 +4,7 @@
 
 - `three-algorithms.php` — решения алгоритмических задач.
 - Остальные `.php`-файлы — тестовое задание Binance Traiding (описание ниже).
-- [`laravel/`](laravel/README.md) — то же задание на Laravel 10 с локальной MySQL.
+- [`laravel/`](laravel/README.md) — то же задание на Laravel 13 (PHP 8.6) с локальной MariaDB.
 
 ## Test Binance Traiding
 

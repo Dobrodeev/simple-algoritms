@@ -15,9 +15,10 @@
 #>
 param(
     [int]$Port = 8000,
-    [string]$PhpDir = 'C:\OSPanel\modules\php\PHP_8.1',
+    # PHP 8.3+ (default: php from PATH, e.g. PHP 8.6 installed with winget) and its own php.ini
+    [string]$PhpDir = $(if (Get-Command php -ErrorAction SilentlyContinue) { Split-Path (Get-Command php).Source } else { '' }),
     [string]$MariaDbDir = 'C:\OSPanel\modules\database\MariaDB-10.8-Win10',
-    [string]$Composer = 'C:\OSPanel\userdata\composer\composer.phar',
+    [string]$Composer = '',   # default: composer.phar next to php.exe
     [switch]$KeepDatabase   # do not stop MariaDB when the site stops
 )
 
@@ -41,11 +42,14 @@ function Invoke-Php {
     if ($LASTEXITCODE -ne 0) { throw "php $($args -join ' ') failed with exit code $LASTEXITCODE" }
 }
 
-foreach ($path in $php, (Join-Path $MariaDbDir 'bin\mariadbd.exe')) {
-    if (-not (Test-Path $path)) { throw "Not found: $path. Check the -PhpDir / -MariaDbDir parameters." }
+if (-not $Composer) { $Composer = Join-Path $PhpDir 'composer.phar' }
+
+foreach ($path in $php, $Composer, (Join-Path $MariaDbDir 'bin\mariadbd.exe')) {
+    if (-not (Test-Path $path)) { throw "Not found: $path. Check the -PhpDir / -Composer / -MariaDbDir parameters." }
 }
 
-$env:PHPRC = Join-Path $root 'php-dev.ini'   # PHP settings for this project
+Remove-Item Env:PHPRC -ErrorAction SilentlyContinue   # use php.ini next to php.exe
+if ([int](& $php -r 'echo PHP_VERSION_ID;') -lt 80300) { throw 'PHP 8.3 or newer is required.' }
 
 # --- MariaDB -------------------------------------------------------------
 if (-not (Test-Path (Join-Path $dataDir 'my.ini'))) {
