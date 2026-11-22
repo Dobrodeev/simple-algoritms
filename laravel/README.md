@@ -15,9 +15,21 @@
 | Курсы валют с Binance по API | `/binance` — `GET https://api.binance.com/api/v3/ticker/price` |
 | Подсветка пар | `…BTC` — зелёный, `…ETH` — жёлтый, `…USDT` — синий |
 
+## Админ-панель
+
+[Filament 3](https://filamentphp.com/) на http://127.0.0.1:8000/admin — список курсов с поиском, сортировкой, фильтром по валюте котировки (BTC / ETH / USDT), создание, редактирование и удаление.
+
+Войти может только пользователь из `ADMIN_EMAIL`. Логин и пароль задаются в `.env` (`ADMIN_EMAIL`, `ADMIN_PASSWORD`; `start.ps1` при первом запуске генерирует пароль сам). Создать или обновить пользователя:
+
+```bash
+php artisan db:seed --class=AdminUserSeeder
+```
+
+Для Filament нужно PHP-расширение `intl`.
+
 ## Требования
 
-- PHP 8.1+ с расширениями `pdo_mysql`, `mbstring`, `openssl`, `curl`, `fileinfo`
+- PHP 8.1+ с расширениями `pdo_mysql`, `intl`, `mbstring`, `openssl`, `curl`, `fileinfo`
 - Composer
 - MySQL 8 (локально)
 

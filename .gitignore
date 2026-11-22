@@ -2,6 +2,7 @@
 config.php
 .env
 .env.*
+!.env.example
 
 # Logs
 error_log
