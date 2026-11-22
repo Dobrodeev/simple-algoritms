@@ -54,7 +54,7 @@ php artisan test
 
 ## Если Binance API не отвечает
 
-Ошибка `cURL error 60: SSL certificate problem` означает, что PHP не находит корневые сертификаты (или HTTPS перехватывает антивирус/прокси). Скачайте [cacert.pem](https://curl.se/docs/caextract.html) и укажите его в `php.ini`:
+Ошибка `cURL error 60: SSL certificate problem` означает, что в `php.ini` не указан файл корневых сертификатов. В OSPanel он уже есть — `C:\OSPanel\userdata\config\cacert.pem`; иначе скачайте [cacert.pem](https://curl.se/docs/caextract.html). Укажите его в `php.ini`:
 
 ```ini
 curl.cainfo = "C:\path\to\cacert.pem"
