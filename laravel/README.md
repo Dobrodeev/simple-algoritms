@@ -21,7 +21,19 @@
 - Composer
 - MySQL 8 (локально)
 
-## Установка
+## Быстрый запуск (Windows + OSPanel)
+
+Из корня репозитория:
+
+```powershell
+.\start.ps1
+```
+
+Скрипт берёт PHP 8.1 и MariaDB 10.8 из `C:\OSPanel`, при первом запуске создаёт базу в `.mariadb\data` (порт 3307, `root` без пароля), ставит зависимости, выполняет миграции и загрузку `courses.json`, затем запускает сайт на http://127.0.0.1:8000. Остановка — Ctrl+C. Параметры: `-Port`, `-PhpDir`, `-MariaDbDir`, `-KeepDatabase`. Настройки PHP — в `php-dev.ini`.
+
+Если PowerShell блокирует запуск скриптов: `powershell -ExecutionPolicy Bypass -File .\start.ps1`.
+
+## Установка вручную
 
 ```bash
 composer install
