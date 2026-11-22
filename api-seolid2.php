@@ -1,0 +1,22 @@
+<?php
+//$url = 'https://api.seolib.ru/account/balance';
+$url = 'https://api.seolib.ru/globals/engines';
+//$url = 'https://api.seolib.ru/globals/regions';
+//$url = 'https://api.seolib.ru/projects/list';
+//$params = [ 'key' => 'YOUR_API_KEY' ];
+$params   = [ 'token' => '1e178770-7a58-11ea-98ce-56847afe9799' ];
+$postdata = json_encode( $params );
+echo $params;
+print_r($params);
+$ch       = curl_init( $url );
+curl_setopt( $ch, CURLOPT_POST, 1 );
+curl_setopt( $ch, CURLOPT_POSTFIELDS, $postdata );
+curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+curl_setopt( $ch, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json' ) );
+$result = curl_exec( $ch );
+curl_close( $ch );
+$decodeResult = json_decode( $result );
+echo '<pre>';
+print_r( $decodeResult );
+echo '</pre>';
+//print_r($result);

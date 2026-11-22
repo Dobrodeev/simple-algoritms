@@ -1,0 +1,26 @@
+# Secrets / local config (DB credentials)
+config.php
+.env
+.env.*
+
+# Logs
+error_log
+*.log
+
+# PHP / Composer
+/vendor/
+composer.phar
+
+# JetBrains IDE (PhpStorm)
+.idea/
+
+# Office temp/lock files
+~$*
+
+# OS files
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Local MariaDB data
+.mariadb/
