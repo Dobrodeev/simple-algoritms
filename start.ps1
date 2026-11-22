@@ -77,7 +77,9 @@ try {
         }
         if (-not (Test-Path '.env')) {
             Write-Step 'Creating .env'
-            (Get-Content '.env.example') -replace '^DB_PORT=.*', "DB_PORT=$dbPort" -replace '^DB_PASSWORD=.*', 'DB_PASSWORD=' |
+            $adminPassword = -join ((48..57) + (97..122) | Get-Random -Count 16 | ForEach-Object { [char]$_ })
+            (Get-Content '.env.example') -replace '^DB_PORT=.*', "DB_PORT=$dbPort" -replace '^DB_PASSWORD=.*', 'DB_PASSWORD=' `
+                -replace '^ADMIN_PASSWORD=.*', "ADMIN_PASSWORD=$adminPassword" |
                 Set-Content '.env'
             Invoke-Php artisan key:generate --ansi
         }
@@ -94,6 +96,13 @@ try {
         if ([int]$count -eq 0) {
             Write-Step 'Loading courses.json into the database'
             Invoke-Php artisan db:seed --force
+        }
+
+        $users = & (Join-Path $MariaDbDir 'bin\mariadb.exe') --host=127.0.0.1 --port=$dbPort --user=root `
+            --batch --skip-column-names --execute='SELECT COUNT(*) FROM binance_test.users'
+        if ([int]$users -eq 0) {
+            Write-Step 'Creating admin panel user (ADMIN_EMAIL / ADMIN_PASSWORD from laravel\.env)'
+            Invoke-Php artisan db:seed --class=AdminUserSeeder --force
         }
     } finally {
         Pop-Location
